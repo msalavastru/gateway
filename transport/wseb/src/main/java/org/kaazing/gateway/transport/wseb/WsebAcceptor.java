@@ -111,7 +111,7 @@ import org.slf4j.LoggerFactory;
 
 // TODO: will need some sort of session cleanup timeout
 public class WsebAcceptor extends AbstractBridgeAcceptor<WsebSession, Binding> {
-
+    //test comment for travis build
     public static final AttributeKey CLIENT_BUFFER_KEY = new AttributeKey(WsebAcceptor.class, "clientBuffer");
     public static final AttributeKey CLIENT_PADDING_KEY = new AttributeKey(WsebAcceptor.class, "clientPadding");
     public static final AttributeKey CLIENT_BLOCK_PADDING_KEY = new AttributeKey(WsebAcceptor.class, "clientBlockPadding");
