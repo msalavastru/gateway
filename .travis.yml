@@ -3,4 +3,4 @@ language: Java
 jdk:
   - oraclejdk8
 install: mvn -q clean -DskipTests -DskipITs install
-script: mvn test -Dtest=JmxManagementServiceHandlerTest && mvn cobertura:cobertura-integration-test coveralls:report
+script: mvn test -Dtest=org.kaazing.gateway.management.jmx.JmxManagementServiceHandlerTest && mvn cobertura:cobertura-integration-test coveralls:report
