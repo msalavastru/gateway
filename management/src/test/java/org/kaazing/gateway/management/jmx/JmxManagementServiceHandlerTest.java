@@ -36,7 +36,7 @@ public class JmxManagementServiceHandlerTest {
 
     @Rule
     public TestRule timeoutRule = createRuleChain(20, SECONDS);
-    //change to trigger travis build on fork
+    //trigger travis build on fork
 
     @Test
     public void testNoJMXBindingNameConflictsOnMultiServicesUsingSameConnect() throws Exception {
