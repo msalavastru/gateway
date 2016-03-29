@@ -3,4 +3,4 @@ language: Java
 jdk:
   - oraclejdk8
 install: mvn -q clean -DskipTests -DskipITs install
-script: mvn -f ./management/pom.xml -Dtest=JmxManagementServiceHandlerTest test
+script: mvn verify -f ./management/pom.xml
