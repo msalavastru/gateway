@@ -79,9 +79,7 @@ public class SchedulerProvider {
 
                 @Override
                 public Thread newThread(Runnable r) {
-                    Thread testThread = new Thread(r, namePrefix + poolNumber.getAndIncrement()); 
-                    testThread.setDaemon(true);
-                    return testThread;
+                    return new Thread(r, namePrefix + poolNumber.getAndIncrement()); ;
                 }
             });
             this.shared = shared;
