@@ -192,21 +192,19 @@ public abstract class ChannelIoAcceptor<C extends IoSessionConfigEx, F extends C
 
             // the signature of this method (and of the public bind method that calls it) implies it is a
             // synchronous operation, which must therefore complete or fail before we return.
-           //final CountDownLatch channelLatch = new CountDownLatch(1);
+           final CountDownLatch channelLatch = new CountDownLatch(1);
             unbound.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture cf) throws Exception {
-                    //if (cf.isSuccess()) {
-                     //   channelLatch.countDown();
-                    //} else {
-                    if (!cf.isSuccess()) {
+                    if (cf.isSuccess()) {
+                        channelLatch.countDown();
+                    } else {
                         throw new IOException(cf.getCause());
                     }
-                    //}
                 }
             });
 
-           /* try {
+            try {
                 channelLatch.await();
             } catch (InterruptedException ex) {
                 IOException ioEx = new IOException("The await for channel to close was interrupted");
@@ -214,7 +212,7 @@ public abstract class ChannelIoAcceptor<C extends IoSessionConfigEx, F extends C
                 ioEx.fillInStackTrace();
                 throw ioEx;
             }
-              */
+              
             /*unbound.awaitUninterruptibly();
             if (!unbound.isSuccess()) {
                 throw new IOException(unbound.getCause());
