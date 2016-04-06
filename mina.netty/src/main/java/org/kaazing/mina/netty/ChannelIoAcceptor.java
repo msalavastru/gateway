@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 
 import org.apache.mina.core.future.IoFuture;
@@ -191,10 +192,31 @@ public abstract class ChannelIoAcceptor<C extends IoSessionConfigEx, F extends C
 
             // the signature of this method (and of the public bind method that calls it) implies it is a
             // synchronous operation, which must therefore complete or fail before we return.
-            unbound.awaitUninterruptibly();
+            final CountDownLatch channelLatch = new CountDownLatch(1);
+            unbound.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture cf) throws Exception {
+                    if (cf.isSuccess()) {
+                        channelLatch.countDown();
+                    } else {
+                        throw new IOException(cf.getCause());
+                    }
+                }
+            });
+
+            try {
+                channelLatch.await();
+            } catch (InterruptedException ex) {
+                IOException ioEx = new IOException("The await for channel to close was interrupted");
+                ioEx.initCause(ex);
+                ioEx.fillInStackTrace();
+                throw ioEx;
+            }
+              
+            /*unbound.awaitUninterruptibly();
             if (!unbound.isSuccess()) {
                 throw new IOException(unbound.getCause());
-            }
+            }*/
         }
 
     }
