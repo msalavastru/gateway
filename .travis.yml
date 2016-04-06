@@ -3,4 +3,4 @@ language: Java
 jdk:
   - oraclejdk8
 install: mvn -q clean -DskipTests -DskipITs install
-script: mvn verify -f ./management/pom.xml
+script: mvn verify -X -f ./management/pom.xml
