@@ -7,4 +7,4 @@ env:
     - secure: "P5oMhssZHp8eBezF2WEUZrzR6du/ibhcNRmZhSC8uKN0NO6AKlGLBID2llQrWED7RoZLoYhReR04LqdQZboGKvmqZ1TRHDkhwUOsFAGFIC2wxFrZPNy06anOjaT+ZfOsMZCtN+mXCaCARSBCSJP7L0vyEIdfaw+ZG2LxBV2GrK0="
 before_install: certificates/add-to-cacerts.sh
 install: mvn -q clean -DskipTests -DskipITs install
-script: mvn verify -X -f ./management/pom.xml
+script: mvn verify -X -f ./transport/nio/pom.xml
