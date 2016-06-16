@@ -109,7 +109,6 @@ public class WsnAcceptorUserLoggingIT {
     @Rule
     public TestRule chain = RuleChain.outerRule(new MethodExecutionTrace()).around(k3po).around(timeoutRule).around(checkLogMessageRule).around(gateway);
 
-    @Ignore("https://github.com/kaazing/tickets/issues/550")
     @Specification("asyncBasicLoginModuleSuccess")
     @Test
     public void verifyPrincipalNameLoggedInLayersAboveHttp() throws Exception {
