@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.kaazing.gateway.service.http.directory.cachecontrol;
 
@@ -40,7 +39,7 @@ public class ConflictResolverUtilsTest {
 
         ConflictResolverUtils.resolveConflicts(specificPattern, generalPattern);
 
-        directives = new HashMap<Directive, String>();
+        directives = new HashMap<>();
         directives.put(Directive.NO_CACHE, EMPTY_STRING_VALUE);
         directives.put(Directive.PUBLIC, EMPTY_STRING_VALUE);
         directives.put(Directive.MAX_AGE, "500");
@@ -57,7 +56,7 @@ public class ConflictResolverUtilsTest {
 
         ConflictResolverUtils.resolveConflicts(specificPattern, generalPattern);
 
-        directives = new HashMap<Directive, String>();
+        directives = new HashMap<>();
         directives.put(Directive.MAX_AGE_MPLUS, "200");
 
         assertEquals(specificPattern.getDirectives(), directives);
@@ -70,7 +69,7 @@ public class ConflictResolverUtilsTest {
 
         ConflictResolverUtils.resolveConflicts(specificPattern, generalPattern);
 
-        directives = new HashMap<Directive, String>();
+        directives = new HashMap<>();
         directives.put(Directive.MAX_AGE, "200");
 
         assertEquals(specificPattern.getDirectives(), directives);

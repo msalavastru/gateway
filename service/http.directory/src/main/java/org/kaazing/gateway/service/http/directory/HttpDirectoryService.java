@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import org.kaazing.gateway.service.Service;
 import org.kaazing.gateway.service.ServiceContext;
 import org.kaazing.gateway.service.ServiceProperties;
 import org.kaazing.gateway.service.http.directory.cachecontrol.ConflictResolverUtils;
-import org.kaazing.gateway.service.http.directory.cachecontrol.Directive;
 import org.kaazing.gateway.service.http.directory.cachecontrol.PatternCacheControl;
 import org.kaazing.gateway.service.http.directory.cachecontrol.PatternMatcherUtils;
 import org.slf4j.Logger;
@@ -43,12 +42,12 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpDirectoryService implements Service {
 
-    private static final String GENERIC_PATTERN = "**/*";
     private static final Comparator<PatternCacheControl> PATTERN_CACHE_CONTROL_COMPARATOR =
             new Comparator<PatternCacheControl>() {
+                @Override
                 public int compare(PatternCacheControl first, PatternCacheControl second) {
-                    return (Integer.valueOf(first.getMatchingPatternCount())).compareTo(Integer.valueOf(second
-                            .getMatchingPatternCount()));
+                    return (Integer.valueOf(first.getMatchingPatternCount())).compareTo(second
+                            .getMatchingPatternCount());
                 }
             };
 
@@ -133,7 +132,7 @@ public class HttpDirectoryService implements Service {
      * @return a list of PatternCacheControl objects
      */
     private List<PatternCacheControl> buildPatternsList(ServiceProperties properties) {
-        Map<String, PatternCacheControl> patterns = new LinkedHashMap<String, PatternCacheControl>();
+        Map<String, PatternCacheControl> patterns = new LinkedHashMap<>();
         List<ServiceProperties> locationsList = properties.getNested("location");
         if (locationsList != null && locationsList.size() != 0) {
             for (ServiceProperties location : locationsList) {
@@ -144,11 +143,9 @@ public class HttpDirectoryService implements Service {
                 }
             }
             resolvePatternSpecificity(patterns);
-            addDefaultCacheControlMaxAge(patterns);
             return sortByMatchingPatternCount(patterns);
         }
-        addDefaultCacheControlMaxAge(patterns);
-        return new ArrayList<PatternCacheControl>(patterns.values());
+        return new ArrayList<>(patterns.values());
     }
 
     /**
@@ -156,7 +153,7 @@ public class HttpDirectoryService implements Service {
      * @param patterns - the map with the patterns to be matched
      */
     private void resolvePatternSpecificity(Map<String, PatternCacheControl> patterns) {
-        List<String> patternList = new ArrayList<String>();
+        List<String> patternList = new ArrayList<>();
         patternList.addAll(patterns.keySet());
 
         int patternCount = patternList.size();
@@ -193,31 +190,10 @@ public class HttpDirectoryService implements Service {
      * @return a list of sorted PatternCacheControl elements
      */
     private List<PatternCacheControl> sortByMatchingPatternCount(Map<String, PatternCacheControl> unsortedMap) {
-        List<PatternCacheControl> list = new ArrayList<PatternCacheControl>(unsortedMap.values());
+        List<PatternCacheControl> list = new ArrayList<>(unsortedMap.values());
         Collections.sort(list, PATTERN_CACHE_CONTROL_COMPARATOR);
         return list;
     }
-
-    /**
-     * Adds "max-age=0" to the generic pattern "** /*" if this does not exist in the configuration file
-     * @param patterns - map with all the patterns and the related cache-control directives
-     */
-    private void addDefaultCacheControlMaxAge(Map<String, PatternCacheControl> patterns) {
-        PatternCacheControl generalPattern = patterns.get(GENERIC_PATTERN);
-        Directive maxAge = Directive.MAX_AGE;
-        // if the general pattern exists in the configuration file
-        if (generalPattern != null) {
-            if (!generalPattern.hasDirective(maxAge) && !generalPattern.hasDirective(Directive.MAX_AGE_MPLUS)) {
-                generalPattern.setDirective(maxAge, "0");
-            }
-        }
-        // else, the general pattern with a max-age = 0 directive needs to be added to the map of patterns
-        else {
-            PatternCacheControl maxAgePattern = new PatternCacheControl(GENERIC_PATTERN, maxAge, "0");
-            patterns.put(GENERIC_PATTERN, maxAgePattern);
-        }
-    }
-
 
     /**
      * Converts a location in the gateway configuration file into a file relative to a specified root directory.
@@ -229,15 +205,12 @@ public class HttpDirectoryService implements Service {
      * @return the file corresponding to the location
      */
     private File toFile(File rootDir, String location) {
-        File locationFile = null;
+        File locationFile = rootDir;
         if (location != null) {
             URI locationURI = URI.create(location);
             locationFile = new File(locationURI.getPath());
             if (locationURI.getScheme() == null) {
-                if (location.charAt(0) == '/') {
-                    location = location.substring(1);
-                    locationFile = new File(rootDir, location);
-                }
+                locationFile = new File(rootDir, location);
             } else if (!"file".equals(locationURI.getScheme())) {
                 throw new IllegalArgumentException("Unexpected resources directory: " + location);
             }
@@ -258,6 +231,9 @@ public class HttpDirectoryService implements Service {
             for (IoSession session : serviceContext.getActiveSessions()) {
                 session.close(true);
             }
+        }
+        if (handler != null) {
+            handler.emptyUrlCacheControlMap();
         }
     }
 

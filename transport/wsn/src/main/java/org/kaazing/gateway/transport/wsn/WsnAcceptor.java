@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -298,15 +298,13 @@ public class WsnAcceptor extends AbstractBridgeAcceptor<WsnSession, WsnBindings.
                     } else {
                         if (balanceeURIs.isEmpty()) {
                             // Balancer participated in this session initialization but found no balancees
-                            redirectResponse = true;
                             response += "R";
                         } else {
                             // Balancer participated in this session initialization and found balancees
                             try {
-                                redirectResponse = true;
                                 response += "R";
                                 response += HttpUtils.mergeQueryParameters(wsnSession.getParentHttpRequestURI(),
-                                        balanceeURIs.iterator().next()).toString();
+                                        balanceeURIs.iterator().next());
                             } catch (URISyntaxException e) {
                                 logger.error(
                                         String.format("Failed to manufacture a balancee URI:  The Http Request URI Query '%s' cannot merge with the configured balancee URI '%s'",
@@ -1538,7 +1536,7 @@ public class WsnAcceptor extends AbstractBridgeAcceptor<WsnSession, WsnBindings.
 
     static class HttpEmptyPacketWriterFilter extends IoFilterAdapter<WsnSession> {
 
-        private final static Logger logger = LoggerFactory.getLogger("transport.http");
+        private static final Logger logger = LoggerFactory.getLogger("transport.http");
 
         static final HttpEmptyPacketWriterFilter INSTANCE = new HttpEmptyPacketWriterFilter();
 

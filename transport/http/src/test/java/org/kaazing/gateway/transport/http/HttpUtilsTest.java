@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import static org.junit.Assert.assertSame;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.apache.mina.core.session.DummySession;
 import org.apache.mina.core.session.IoSession;
@@ -161,12 +162,12 @@ public class HttpUtilsTest {
 
     @Test
     public void hasCloseHeadersShouldDetectCaseCloseOutOfMany() {
-        assertTrue(HttpUtils.hasCloseHeader(Arrays.asList(new String[]{"doodah",  "close"})));
+        assertTrue(HttpUtils.hasCloseHeader(Arrays.asList("doodah", "close")));
     }
 
     @Test
     public void hasCloseHeadersShouldDetectCaseInsensitiveClose() {
-        assertTrue(HttpUtils.hasCloseHeader(Arrays.asList(new String[]{"cLosE"})));
+        assertTrue(HttpUtils.hasCloseHeader(Collections.singletonList("cLosE")));
     }
 
     @Test

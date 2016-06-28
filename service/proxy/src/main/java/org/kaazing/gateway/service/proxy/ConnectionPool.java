@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -233,15 +233,18 @@ class ConnectionPool {
             connectFutures = new ConcurrentSkipListMap<>();
         }
 
+        @Override
         ConnectFuture pollFirstEntry() {
             Entry<Long, ConnectFuture> entry = connectFutures.pollFirstEntry();
             return entry == null ? null : entry.getValue();
         }
 
+        @Override
         ConnectFuture remove(Object key) {
             return connectFutures.remove(key);
         }
 
+        @Override
         Object add(ConnectFuture future) {
             Long key = nextFutureId.getAndIncrement();
             connectFutures.put(key,  future);

@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kaazing.gateway.transport.wseb.logging;
+package org.kaazing.gateway.transport.wseb.logging.loginmodule;
 
 import java.security.Principal;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class BasicLoginModuleWithDefaultUserConfig implements LoginModule {
     private DefaultUserConfig defaultPrincipal = new DefaultUserConfig();
 
     // initial state
-    private Subject subject;
+    protected Subject subject;
     private Map<String, ?> sharedState;
 
     // the authentication status
@@ -46,6 +46,7 @@ public class BasicLoginModuleWithDefaultUserConfig implements LoginModule {
     // testUser's RolePrincipal
     private RolePrincipal userPrincipal;
 
+    @Override
     public void initialize(Subject subject,
                            CallbackHandler callbackHandler,
                            Map<String, ?> sharedState,
@@ -115,9 +116,7 @@ public class BasicLoginModuleWithDefaultUserConfig implements LoginModule {
         succeeded = false;
         commitSucceeded = false;
         userPrincipal = null;
-
         subject.getPrincipals().remove(defaultPrincipal);
-
         return true;
     }
 

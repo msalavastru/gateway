@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ public class WsCloseTransportTest {
     private static final Integer ADAPTER_LATCH_UNEXPECTED_TIMEOUT = 2;
 
     private final ResourceAddressFactory resourceAddressFactory = ResourceAddressFactory.newResourceAddressFactory();
-    TransportFactory transportFactory = TransportFactory.newTransportFactory(Collections.<String, Object> emptyMap());
+    TransportFactory transportFactory = TransportFactory.newTransportFactory(Collections.emptyMap());
     private final BridgeServiceFactory bridgeServiceFactory = new BridgeServiceFactory(transportFactory);
 //    private final ServiceRegistry serviceRegistry = new ServiceRegistry();
     private WsnAcceptor wsnAcceptor;
@@ -465,7 +465,7 @@ public class WsCloseTransportTest {
 
         IoSession clientSession = future.getSession();
 
-        UnbindFuture unbindFuture = null;
+        UnbindFuture unbindFuture;
         try {
             waitForLatch(clientSessionOpened, SESSION_LATCH_TIMEOUT,
                 TimeUnit.SECONDS,

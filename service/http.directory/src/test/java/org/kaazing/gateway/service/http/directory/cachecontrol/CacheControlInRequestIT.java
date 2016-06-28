@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.kaazing.gateway.service.http.directory.cachecontrol;
 
@@ -59,11 +58,6 @@ public class CacheControlInRequestIT {
     @Rule
     public final TestRule chain = outerRule(k3po).around(gateway);
 
-    @Test
-    @Specification({"max-age.fresh.response.from.cache/request"})
-    public void shouldReceiveCachedResponseWithMaxAgeWhenCachedResponseIsFresh() throws Exception {
-        k3po.finish();
-    }
 
     @Test
     @Specification({"max-age.stale.response.conditional.request.304/request"})
@@ -73,19 +67,7 @@ public class CacheControlInRequestIT {
 
     @Test
     @Specification({"max-age.stale.response.unconditional.request.200/request"})
-    public void shouldReceiveNotModifiedWhenCachedResponseIsStaleForUnconditionalRequestWithMaxAge() throws Exception {
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({"max-stale.any.age.from.cache/request"})
-    public void shouldReceiveCachedResponseForMaxStaleWithNoValue() throws Exception {
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({"max-stale.stale.response.from.cache/request"})
-    public void shouldReceiveCachedResponseForMaxStaleWithinLimit() throws Exception {
+    public void shouldReceiveOKWhenCachedResponseIsStaleForUnconditionalRequestWithMaxAge() throws Exception {
         k3po.finish();
     }
 
@@ -102,15 +84,8 @@ public class CacheControlInRequestIT {
     }
 
     @Test
-    @Specification({"min-fresh.fresh.response.from.cache/request"})
-    public void shouldReceiveCachedResponseForMinFreshWithinLimit() throws Exception {
-        k3po.finish();
-    }
-
-    @Test
     @Specification({"min-fresh.fresh.response.conditional.request.304/request"})
-    public void shouldReceiveNotModifiedWithFreshCachedResponseWhenMinFreshExceedsLimitForForConditionalRequest()
-            throws Exception {
+    public void shouldReceiveNotModifiedWithFreshCachedResponseWhenMinFreshExceedsLimitForForConditionalRequest() throws Exception {
         k3po.finish();
     }
 
@@ -128,8 +103,7 @@ public class CacheControlInRequestIT {
 
     @Test
     @Specification({"min-fresh.stale.response.unconditional.request.200/request"})
-    public void shouldReceiveNotModifiedWithStaleCachedResponseWhenMinFreshExceedsLimitForUnconditionalRequest()
-            throws Exception {
+    public void shouldReceiveOKWithStaleCachedResponseWhenMinFreshExceedsLimitForUnconditionalRequest() throws Exception {
         k3po.finish();
     }
 
@@ -152,8 +126,8 @@ public class CacheControlInRequestIT {
     }
 
     @Test
-    @Specification({"only-if-cached.from.cache/request"})
-    public void shouldReceiveCachedResponseWithOnlyIfCachedAndReachableCache() throws Exception {
+    @Specification({"no-store.200/request"})
+    public void shouldReceiveOKWithNoStoreRequest() throws Exception {
         k3po.finish();
     }
 }

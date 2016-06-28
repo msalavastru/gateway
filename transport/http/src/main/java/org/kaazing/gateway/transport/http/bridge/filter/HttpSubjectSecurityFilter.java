@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,6 +128,7 @@ public class HttpSubjectSecurityFilter extends HttpLoginSecurityFilter {
         securityMessageReceived(nextFilter, session, httpRequest);
     }
 
+    @Override
     protected void writeSessionCookie(IoSession session, HttpRequestMessage httpRequest, DefaultLoginResult loginResult) {
         // secure requests always have cookie accessible, even
         // on first access

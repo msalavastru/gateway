@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.kaazing</groupId>
         <artifactId>community</artifactId>
-        <version>2.17</version>
+        <version>2.20</version>
     </parent>
 
     <artifactId>gateway</artifactId>
@@ -28,12 +28,14 @@
         <maven.compiler.testSource>1.8</maven.compiler.testSource>
         <maven.compiler.testTarget>1.8</maven.compiler.testTarget>
         <hazelcast.version>1.9.4.8</hazelcast.version>
-        <k3po.version>3.0.0-alpha-24</k3po.version>
+        <k3po.version>3.0.0-alpha-34</k3po.version>
         <jdom.version>1.1</jdom.version>
         <jmock.version>2.6.0</jmock.version>
-        <slf4j.log4j.version>1.7.5</slf4j.log4j.version>
+        <slf4j.log4j.version>1.7.21</slf4j.log4j.version>
         <agrona.version>0.4.2</agrona.version>
         <enforcer.skip>true</enforcer.skip>
+        <!-- Try to avoid huge heap size on Travis builds -->
+        <failsafeArgLine>-Xmx1024m</failsafeArgLine>
     </properties>
 
     <modules>
@@ -209,30 +211,40 @@
                 <artifactId>specification.httpxe</artifactId>
                 <version>${k3po.version}</version>
                 <scope>test</scope>
-            </dependency>
-        </dependencies>
+            </dependency>     
+       </dependencies>
     </dependencyManagement>
 
     <build>
         <pluginManagement>
             <plugins>
-                <!-- Try to avoid huge heap size on Travis builds -->
                 <plugin>
-                  <artifactId>maven-failsafe-plugin</artifactId>
-                  <version>${failsafe.plugin.version}</version>
-                  <executions>
-                    <execution>
-                      <goals>
-                        <goal>integration-test</goal>
-                        <goal>verify</goal>
-                      </goals>
-                      <configuration>
-                        <argLine>-Xmx1024m</argLine>
-                      </configuration>
-                    </execution>
-                  </executions>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <configuration>
+                        <argLine>@{failsafeArgLine}</argLine>
+                        <skipTests>${skipITs}</skipTests>
+                        <!-- workaround to get the total(unit and integration) number of tests in the sonar dashboard -->
+                        <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
-
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.19</version>
+                    <configuration>
+                        <argLine>${surefireArgLine}</argLine>
+                        <skipTests>${skipTests}</skipTests>
+                    </configuration>
+                </plugin>
                 <!-- Adds properties to manifest which are used for finding 
                     duplicate jars on classpath -->
                 <plugin>
@@ -248,13 +260,6 @@
                         </archive>
                     </configuration>
                 </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.19</version>
-                </plugin>
-
                 <!-- Ignore/Execute plugin execution by m2e in Eclipse -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
@@ -476,7 +481,7 @@
                     <instrumentation>
                         <excludes>
                             <exclude>schemaorg_apache_xmlbeans/system/**/*.class</exclude>
-                            <exclude>org/kaazing/gateway/server/config/sep2014/**/*.class</exclude>
+                            <exclude>org/kaazing/gateway/server/config/**/*.class</exclude>
                             <exclude>org/kaazing/xmlns/**/*.class</exclude>
                         </excludes>
                     </instrumentation>
@@ -496,6 +501,53 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.7.5.201505241946</version>
+                        <executions>
+                            <execution>
+                                <id>pre-unit-test</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                                <configuration>
+                                    <propertyName>surefireArgLine</propertyName>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>post-unit-test</id>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>pre-integration-test</id>
+                                <goals>
+                                    <goal>prepare-agent-integration</goal>
+                                </goals>
+                                <configuration>
+                                    <propertyName>failsafeArgLine</propertyName>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>post-integration-test</id>
+                                <goals>
+                                    <goal>report-integration</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
 

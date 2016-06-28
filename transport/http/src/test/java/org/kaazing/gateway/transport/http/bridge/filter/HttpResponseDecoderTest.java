@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
 
@@ -82,7 +83,7 @@ public class HttpResponseDecoderTest {
         assertEquals(HttpStatus.SUCCESS_OK, httpResponse.getStatus());
         assertEquals("OK (Test)", httpResponse.getReason());
         assertNull(httpResponse.getContent());
-        assertEquals(Arrays.asList("Test"), httpResponse.getHeaderValues("Server"));
+        assertEquals(Collections.singletonList("Test"), httpResponse.getHeaderValues("Server"));
 
         assertTrue(session.getDecoderOutputQueue().isEmpty());
         decoder.finishDecode(session, session.getDecoderOutput());

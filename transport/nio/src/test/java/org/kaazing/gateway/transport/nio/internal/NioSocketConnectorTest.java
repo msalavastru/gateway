@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,6 +97,7 @@ public class NioSocketConnectorTest {
                     public void initializeSession(IoSession session, ConnectFuture future) {
                         session.getFilterChain().addFirst("test", new IoFilterAdapter(){
 
+                            @Override
                             public void sessionOpened(NextFilter nextFilter, IoSession session) throws Exception {
                                     try {
                                         //System.out.println("sessionOpened executing in thread " + Thread.currentThread());

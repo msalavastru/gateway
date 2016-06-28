@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -277,22 +277,22 @@ public class ServiceConfigurationBeanImpl implements ServiceConfigurationBean {
 
                     String pipeTransport = (String) connectOptions.remove("pipe.transport");
                     if (pipeTransport != null) {
-                        jsonOptions.put("pipe.transport", pipeTransport.toString());
+                        jsonOptions.put("pipe.transport", pipeTransport);
                     }
 
                     String tcpTransport = (String) connectOptions.remove("tcp.transport");
                     if (tcpTransport != null) {
-                        jsonOptions.put("tcp.transport", tcpTransport.toString());
+                        jsonOptions.put("tcp.transport", tcpTransport);
                     }
 
                     String sslTransport = (String) connectOptions.remove("ssl.transport");
                     if (sslTransport != null) {
-                        jsonOptions.put("ssl.transport", sslTransport.toString());
+                        jsonOptions.put("ssl.transport", sslTransport);
                     }
 
                     String httpTransport = (String) connectOptions.remove("http[http/1.1].transport");
                     if (httpTransport != null) {
-                        jsonOptions.put("http.transport", httpTransport.toString());
+                        jsonOptions.put("http.transport", httpTransport);
                     }
 
                     Long inactivityTimeout = (Long) connectOptions.remove(INACTIVITY_TIMEOUT);

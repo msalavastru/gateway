@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public final class ResolutionUtils {
-    private static List<NetworkInterface> networkInterfaces = new ArrayList<NetworkInterface>();
+    private static List<NetworkInterface> networkInterfaces = new ArrayList<>();
     private static final Logger LOG = LoggerFactory.getLogger(ResolutionUtils.class);
     static {
         try {
@@ -67,7 +67,7 @@ public final class ResolutionUtils {
    public static Collection<InetAddress> getAllByName(String host, boolean allowIPv6) {
        Enumeration<NetworkInterface> networkInterfaces = cloneInterfaces(ResolutionUtils.networkInterfaces);
        List<String> resolvedAddresses = resolveDeviceAddress(host, networkInterfaces, allowIPv6);
-       List<InetAddress> resolvedDeviceURIs = new ArrayList<InetAddress>();
+       List<InetAddress> resolvedDeviceURIs = new ArrayList<>();
        List<InetAddress> resolvedHosts = resolvedDeviceURIs;
        for (String resolvedAddress : resolvedAddresses) {
            try {
@@ -124,7 +124,7 @@ public final class ResolutionUtils {
     */
    private static List<String> resolveDeviceAddress(String deviceName,
            Enumeration<NetworkInterface> networkInterfaces, boolean allowIPv6) {
-        List<String> resolvedAddresses = new ArrayList<String>();
+        List<String> resolvedAddresses = new ArrayList<>();
         if (deviceName.startsWith("[@") && deviceName.endsWith("]")) {
             deviceName = deviceName.substring(2, deviceName.lastIndexOf(']'));
         } else if (deviceName.startsWith("@")) {

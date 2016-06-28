@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import org.kaazing.gateway.resource.address.URLUtils;
  *
  */
 public final class URIUtils {
-    public static final String NETWORK_INTERFACE_AUTHORITY_PORT = "^(\\[{0,1}@[a-zA-Z0-9 :]*\\]{0,1}):([0-9]*)$";
+    public static final String NETWORK_INTERFACE_AUTHORITY_PORT = "^(\\[@[a-zA-Z0-9 :]*\\]|@[a-zA-Z0-9:]*):([0-9]*)$";
     private static final String NETWORK_INTERFACE_AUTHORITY = "(\\[{0,1}@[a-zA-Z0-9 :]*\\]{0,1})";
     private static final String MOCK_HOST = "127.0.0.1";
 
@@ -213,7 +213,7 @@ public final class URIUtils {
      */
     public static String buildURIAsString(String scheme, String authority, String path,
             String query, String fragment) throws URISyntaxException {
-        URI helperURI = null;
+        URI helperURI;
         try {
             helperURI = new URI(scheme, authority, path, query, fragment);
         } catch (URISyntaxException e) {
@@ -236,7 +236,7 @@ public final class URIUtils {
      */
     public static String buildURIAsString(String scheme, String userInfo,
             String host, int port, String path, String query, String fragment) throws URISyntaxException {
-        URI helperURI = null;
+        URI helperURI;
         try {
             helperURI = new URI(scheme, userInfo, host, port, path, query, fragment);
         } catch (URISyntaxException e) {
@@ -406,7 +406,7 @@ public final class URIUtils {
         private boolean absolute;
 
         public static String buildURIToString(String scheme, String authority, String path, String query, String fragment) {
-            URI helperURI = null;
+            URI helperURI;
             try {
                 helperURI = new URI(scheme, HOST_TEMPLATE, path, query, fragment);
             } catch (URISyntaxException e) {
@@ -417,7 +417,7 @@ public final class URIUtils {
 
         public static String buildURIToString(String scheme, String userInfo, String host, int port, String path, String query,
                 String fragment) {
-            URI helperURI = null;
+            URI helperURI;
             try {
                 helperURI = new URI(scheme, userInfo, HOST_TEMPLATE, port, path, query, fragment);
             } catch (URISyntaxException e) {

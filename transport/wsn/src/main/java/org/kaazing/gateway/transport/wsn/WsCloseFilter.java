@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -227,7 +227,7 @@ public class WsCloseFilter
 
         if (!session.isConnected()) {
             if (logger != null && logger.isTraceEnabled()) {
-                logger.trace(format("session is no longer connected - skipping WS CLOSE handshake"));
+                logger.trace("session is no longer connected - skipping WS CLOSE handshake");
             }
             nextFilter.filterClose(session);
             return null;
@@ -302,7 +302,7 @@ public class WsCloseFilter
 
         if (!session.isConnected()) {
             if (logger != null && logger.isTraceEnabled()) {
-                logger.trace(format("session is no longer connected - skipping WS CLOSE handshake"));
+                logger.trace("session is no longer connected - skipping WS CLOSE handshake");
             }
             nextFilter.filterClose(session);
             return;
@@ -321,6 +321,7 @@ public class WsCloseFilter
             if (cause != null) {
                 if (cause instanceof WSMessageTooLongException) {
                     closeMessage = WsCloseMessage.MESSAGE_TOO_LONG_ERROR;
+                    session.suspendRead();
                 } else if(cause instanceof ProtocolDecoderException) {
                     closeMessage = WsCloseMessage.PROTOCOL_ERROR;
                 } else {

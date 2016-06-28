@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,6 +89,7 @@ public final class HttpClientAccessPolicyXml extends HttpDynamicResource {
     // </cross-domain-access>
     // </access-policy>
 
+    @Override
     public void writeFile(HttpAcceptSession httpSession) throws IOException {
         CharsetEncoder utf8Encoder = UTF_8.newEncoder();
 
@@ -266,6 +267,7 @@ public final class HttpClientAccessPolicyXml extends HttpDynamicResource {
             this.result = result;
         }
 
+        @Override
         public void writeFile(HttpAcceptSession httpSession) {
             if (maxAge != null) {
                 httpSession.setWriteHeader(HEADER_MAX_AGE, valueOf(maxAge));

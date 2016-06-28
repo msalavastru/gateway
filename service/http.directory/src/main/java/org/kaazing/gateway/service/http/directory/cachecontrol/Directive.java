@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kaazing.gateway.service.http.directory.cachecontrol;
 
 import java.util.HashMap;
@@ -39,7 +38,7 @@ public enum Directive {
 
     private String name;
 
-    private static final Map<String, Directive> lookup = new HashMap<String, Directive>();
+    private static final Map<String, Directive> lookup = new HashMap<>();
 
     static {
         for (Directive entry : Directive.values()) {
@@ -47,7 +46,7 @@ public enum Directive {
         }
     }
 
-    private Directive(String name) {
+    Directive(String name) {
         this.name = name;
     }
 

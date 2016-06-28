@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,14 +119,14 @@ public class UdpResourceAddressFactorySpiTest {
 
     @Test
     public void shouldCreateAddressWithBindOptionsAndAllowNetworkInterfaceSyntaxBrackets() {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         options.put("udp.bind", "[@" + networkInterface + "]:8080");
         ResourceAddress address = factory.newResourceAddress(addressURI, options);
         assertEquals(8080, address.getResource().getPort());
     }
 
     public void shouldCreateAddressWithBindOptionsAndAllowNetworkInterfaceSyntaxNoBrackets() {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         options.put("udp.bind", "@" + networkInterface + ":8080");
         if (networkInterface.contains(" ")) {
             thrown.expect(IllegalArgumentException.class);
@@ -138,7 +138,7 @@ public class UdpResourceAddressFactorySpiTest {
 
     @Test
     public void shouldCreateAddressWithTransportOptionsAndAllowNetworkInterfaceSyntaxBrackets() {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         // udp.transport option does not exist, therefre the option will be ignored and the transport will not be overiden
         options.put("udp.transport", "udp://[@" + networkInterface + "]:8080");
         ResourceAddress address = factory.newResourceAddress(addressURI, options);
@@ -148,7 +148,7 @@ public class UdpResourceAddressFactorySpiTest {
 
     @Test
     public void shouldCreateAddressWithTransportOptionsAndIgnoreNetworkInterfaceSyntaxNoBrackets() {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         // udp.transport option does not exist, therefre the option will be ignored and the transport will not be overiden
         options.put("udp.transport", "udp://@" + networkInterface + ":8080");
         ResourceAddress address = factory.newResourceAddress(addressURI, options);

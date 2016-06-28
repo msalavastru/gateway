@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kaazing.gateway.transport.http;
 
 import static org.kaazing.gateway.util.InternalSystemProperty.HTTPXE_SPECIFICATION;
@@ -69,7 +68,7 @@ public class HttpAcceptorRule implements TestRule {
         @Override
         public void evaluate() throws Throwable {
             SchedulerProvider schedulerProvider = new SchedulerProvider();
-            TransportFactory transportFactory = TransportFactory.newTransportFactory(Collections.<String, Object>emptyMap());
+            TransportFactory transportFactory = TransportFactory.newTransportFactory(Collections.emptyMap());
             addressFactory = ResourceAddressFactory.newResourceAddressFactory();
             Properties config = new Properties();
             config.setProperty(HTTPXE_SPECIFICATION.getPropertyName(), "true");

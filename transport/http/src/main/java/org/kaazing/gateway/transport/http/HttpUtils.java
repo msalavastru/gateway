@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -718,7 +718,7 @@ public class HttpUtils {
         }
 
         if ( to.getHeaders() == null ) {
-            to.setHeaders(new HashMap<String, List<String>>(fromHeaders.size()));
+            to.setHeaders(new HashMap<>(fromHeaders.size()));
         }
 
         // Get mutable headers
@@ -801,7 +801,7 @@ public class HttpUtils {
         }
 
         if ( to.getParameters() == null ) {
-            to.setParameters(new HashMap<String, List<String>>(fromParameters.size()));
+            to.setParameters(new HashMap<>(fromParameters.size()));
         }
 
         // Get mutable parameters

@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,6 +70,7 @@ import org.kaazing.mina.core.session.IoSessionEx;
 import org.kaazing.test.util.MethodExecutionTrace;
 
 public class WsnConnectorTest {
+    private static final int NETWORK_OPERATION_WAIT_SECS = 10; // was 3, increasing for loaded environments
 
     @Rule
     public MethodExecutionTrace testExecutionTrace = new MethodExecutionTrace();
@@ -77,12 +78,8 @@ public class WsnConnectorTest {
     @Rule
     public TestRule timeoutRule = new DisableOnDebug(new Timeout(10, SECONDS));
 
-    private SchedulerProvider schedulerProvider;
-
-    private static int NETWORK_OPERATION_WAIT_SECS = 10; // was 3, increasing for loaded environments
 
     private ResourceAddressFactory addressFactory;
-    private BridgeServiceFactory serviceFactory;
 
     private NioSocketConnector tcpConnector;
     private HttpConnector httpConnector;
@@ -94,11 +91,11 @@ public class WsnConnectorTest {
 
     @Before
     public void init() {
-        schedulerProvider = new SchedulerProvider();
+        SchedulerProvider schedulerProvider = new SchedulerProvider();
 
         addressFactory = ResourceAddressFactory.newResourceAddressFactory();
-        TransportFactory transportFactory = TransportFactory.newTransportFactory(Collections.<String, Object> emptyMap());
-        serviceFactory = new BridgeServiceFactory(transportFactory);
+        TransportFactory transportFactory = TransportFactory.newTransportFactory(Collections.emptyMap());
+        BridgeServiceFactory serviceFactory = new BridgeServiceFactory(transportFactory);
 
         tcpAcceptor = (NioSocketAcceptor)transportFactory.getTransport("tcp").getAcceptor();
 

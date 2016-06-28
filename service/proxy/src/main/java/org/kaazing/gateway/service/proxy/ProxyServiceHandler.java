@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ public class ProxyServiceHandler extends AbstractProxyAcceptHandler {
 
     public ProxyServiceHandler() {
         super();
-        extensions = new ArrayList<ProxyServiceExtensionSpi>();
+        extensions = new ArrayList<>();
     }
 
     // package private method for registering proxy service extensions so that
@@ -126,6 +126,7 @@ public class ProxyServiceHandler extends AbstractProxyAcceptHandler {
             this.acceptSession = acceptSession;
         }
 
+        @Override
         public void operationComplete(ConnectFuture future) {
             if (future.isConnected()) {
                 IoSession connectedSession = future.getSession();

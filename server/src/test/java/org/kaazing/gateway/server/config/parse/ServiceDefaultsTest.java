@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,11 +71,11 @@ public class ServiceDefaultsTest {
         Assert.assertTrue("en0".equals(connectOptionsMap.get("udp.interface")));
         System.out.println(connectOptionsMap.get("tcp.transport"));
         Assert.assertTrue("socks://localhost:8000".equals(connectOptionsMap.get("tcp.transport").toString().trim()));
-        Assert.assertTrue("disabled".equalsIgnoreCase((String) connectOptionsMap.get("ssl.encryption")));
+        Assert.assertFalse((Boolean)connectOptionsMap.get("ssl.encryptionEnabled"));
 
-        Assert.assertEquals(5, connectOptionsMap.get(HTTP_KEEP_ALIVE_TIMEOUT_KEY));
-        Assert.assertFalse((Boolean) connectOptionsMap.get(HTTP_KEEP_ALIVE));
-        Assert.assertEquals(7, connectOptionsMap.get("http.keepalive.connections"));
+        Assert.assertEquals(5, connectOptionsMap.get("http[http/1.1]."+HTTP_KEEP_ALIVE_TIMEOUT_KEY));
+        Assert.assertFalse((Boolean) connectOptionsMap.get("http[http/1.1]."+HTTP_KEEP_ALIVE));
+        Assert.assertEquals(7, connectOptionsMap.get("http[http/1.1].keepalive.connections"));
     }
 
     @Test

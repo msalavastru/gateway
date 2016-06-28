@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,11 +67,11 @@ public class SslTransportTest {
     private static final long NETWORK_OPERATION_WAIT_MILLIS = TimeUnit.SECONDS.toMillis(NETWORK_OPERATION_WAIT_SECS);
 
     private final ResourceAddressFactory resourceAddressFactory = ResourceAddressFactory.newResourceAddressFactory();
-    private final TransportFactory transportFactory = TransportFactory.newTransportFactory(Collections.<String, Object>emptyMap());
+    private final TransportFactory transportFactory = TransportFactory.newTransportFactory(Collections.emptyMap());
     private final BridgeServiceFactory bridgeServiceFactory = new BridgeServiceFactory(transportFactory);
 
     // For development of test
-    private static boolean DEBUG = false;
+    private static final boolean DEBUG = false;
 
     private KeyStore keyStore;
     private String keyStoreFile;

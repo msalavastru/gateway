@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -111,7 +111,7 @@ public abstract class HttpLoginSecurityFilter extends HttpBaseSecurityFilter {
         public AppConfigurationEntry[] getAppConfigurationEntry(String name) {
             return new AppConfigurationEntry[] {
                     new AppConfigurationEntry(YesLoginModule.class.getName(), AppConfigurationEntry.LoginModuleControlFlag.REQUIRED,
-                            new HashMap<String, Object>())};
+                            new HashMap<>())};
         }
     }
 
@@ -150,7 +150,7 @@ public abstract class HttpLoginSecurityFilter extends HttpBaseSecurityFilter {
                                       AuthenticationToken authToken,
                                       TypedCallbackHandlerMap additionalCallbacks) {
 
-        DefaultLoginResult loginResult = null;
+        DefaultLoginResult loginResult;
 
         // We build a LoginContext here and call login() so that login
         // modules have a chance to any challenge parameters to the initial
@@ -506,7 +506,7 @@ public abstract class HttpLoginSecurityFilter extends HttpBaseSecurityFilter {
 
     private void populateRemoteAddress(TypedCallbackHandlerMap callbackHandlerMap, URI resource) {
         String remoteIpAddress = resource.getHost();
-        InetAddress remoteAddr = null;
+        InetAddress remoteAddr;
 
         try {
             remoteAddr = InetAddress.getByName(remoteIpAddress);

@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,23 @@ package org.kaazing.gateway.service.http.proxy;
 import static java.lang.String.format;
 
 import java.util.Collection;
+import java.util.Properties;
+
+import javax.annotation.Resource;
 
 import org.kaazing.gateway.resource.address.uri.URIUtils;
 import org.kaazing.gateway.service.ServiceContext;
 import org.kaazing.gateway.service.proxy.AbstractProxyService;
+import org.kaazing.gateway.util.feature.EarlyAccessFeatures;
 
 /**
  * Http proxy service
  */
 public class HttpProxyService extends AbstractProxyService<HttpProxyServiceHandler> {
-    private static final String TRAILING_SLASH_ERROR = "Accept URI is '%s' and connect URI is '%s'. Either both URI should end with / or both not.";
+    private static final String TRAILING_SLASH_ERROR = "The accept URI is '%s' and the connect URI is '%s'. "
+            + "One has a trailing slash and one doesn't. Both URIs either need to include a trailing slash or omit it.";
+
+    private Properties configuration;
 
     @Override
     public String getType() {
@@ -36,6 +43,7 @@ public class HttpProxyService extends AbstractProxyService<HttpProxyServiceHandl
 
     @Override
     public void init(ServiceContext serviceContext) throws Exception {
+        EarlyAccessFeatures.HTTP_PROXY_SERVICE.assertEnabled(configuration, serviceContext.getLogger());
         super.init(serviceContext);
         Collection<String> connectURIs = serviceContext.getConnects();
         if (connectURIs == null || connectURIs.isEmpty()) {
@@ -47,6 +55,11 @@ public class HttpProxyService extends AbstractProxyService<HttpProxyServiceHandl
         HttpProxyServiceHandler handler = getHandler();
         handler.setConnectURIs(connectURIs);
         handler.init();
+    }
+
+    @Resource(name = "configuration")
+    public void setConfiguration(Properties configuration) {
+        this.configuration = configuration;
     }
 
     private void checkForTrailingSlashes(ServiceContext serviceContext) {

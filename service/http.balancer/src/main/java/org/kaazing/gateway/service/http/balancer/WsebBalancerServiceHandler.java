@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,14 +86,16 @@ class WsebBalancerServiceHandler extends IoHandlerAdapter<HttpAcceptSession> {
 
             URI requestURI = session.getRequestURI();
             String balanceeScheme = getScheme(selectedBalanceeURI);
-            if (balanceeScheme.equals("sse")) {
-                balanceeScheme = "http";
-            }
-            else if (balanceeScheme.equals("sse+ssl")) {
-                balanceeScheme = "https";
-            }
-            else {
-                balanceeScheme = getScheme(selectedBalanceeURI).replaceFirst("^ws", "http");
+            switch (balanceeScheme) {
+                case "sse":
+                    balanceeScheme = "http";
+                    break;
+                case "sse+ssl":
+                    balanceeScheme = "https";
+                    break;
+                default:
+                    balanceeScheme = getScheme(selectedBalanceeURI).replaceFirst("^ws", "http");
+                    break;
             }
             String balanceePath = getPath(selectedBalanceeURI);
             String requestPath = requestURI.getPath();
@@ -108,7 +110,7 @@ class WsebBalancerServiceHandler extends IoHandlerAdapter<HttpAcceptSession> {
             selectedBalanceeURI = buildURIAsString(balanceeScheme, getAuthority(selectedBalanceeURI), balanceePath, balanceeQuery, null);
 
             session.setStatus(HttpStatus.REDIRECT_FOUND /* 302 */);
-            session.setWriteHeader("Location", selectedBalanceeURI.toString());
+            session.setWriteHeader("Location", selectedBalanceeURI);
         }
         session.close(false);
     }

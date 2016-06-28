@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,10 +46,7 @@ import org.kaazing.gateway.util.scheduler.SchedulerProvider;
 
 public class WsebAcceptorTest {
 
-    private SchedulerProvider schedulerProvider;
-    
     private ResourceAddressFactory addressFactory;
-    private BridgeServiceFactory serviceFactory;
 
     private NioSocketConnector tcpConnector;
     private HttpConnector httpConnector;
@@ -58,18 +55,17 @@ public class WsebAcceptorTest {
     private NioSocketAcceptor tcpAcceptor;
     private HttpAcceptor httpAcceptor;
     private WsebAcceptor wsebAcceptor;
-    private WsAcceptor wsAcceptor;
 
     @Rule
     public TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
 
     @Before
     public void init() {
-        schedulerProvider = new SchedulerProvider();
+        SchedulerProvider schedulerProvider = new SchedulerProvider();
          
         addressFactory = ResourceAddressFactory.newResourceAddressFactory();
         TransportFactory transportFactory = TransportFactory.newTransportFactory(Collections.EMPTY_MAP);
-        serviceFactory = new BridgeServiceFactory(transportFactory);
+        BridgeServiceFactory serviceFactory = new BridgeServiceFactory(transportFactory);
 
         tcpAcceptor = (NioSocketAcceptor)transportFactory.getTransport("tcp").getAcceptor();
         tcpAcceptor.setResourceAddressFactory(addressFactory);
@@ -94,7 +90,7 @@ public class WsebAcceptorTest {
         wsebAcceptor.setResourceAddressFactory(addressFactory);
         wsebAcceptor.setSchedulerProvider(schedulerProvider);
 
-        wsAcceptor = (WsAcceptor)transportFactory.getTransport("ws").getAcceptor();
+        WsAcceptor wsAcceptor = (WsAcceptor) transportFactory.getTransport("ws").getAcceptor();
         wsAcceptor.setWsebAcceptor(wsebAcceptor);
 
         wsebConnector = (WsebConnector)transportFactory.getTransport("wseb").getConnector();

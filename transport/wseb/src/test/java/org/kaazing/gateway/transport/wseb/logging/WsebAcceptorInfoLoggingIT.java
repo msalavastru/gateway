@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kaazing.gateway.transport.wseb.logging;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -105,15 +104,15 @@ public class WsebAcceptorInfoLoggingIT {
     public void shouldLogProtocolException() throws Exception {
         k3po.finish();
 
-        expectedPatterns = new ArrayList<String>(Arrays.asList(new String[] {
-            "tcp#.*OPENED",
-            "tcp#.*CLOSED",
-            "http#.*OPENED",
-            "http#.*EXCEPTION.*Protocol.*Exception",
-            "http#.*CLOSED",
-            "wseb#.*OPENED",
-            "wseb#.*IOException.*caused by.*Protocol.*Exception",
-            "wseb#.*CLOSED"
+        expectedPatterns = new ArrayList<>(Arrays.asList(new String[]{
+                "tcp#.*OPENED",
+                "tcp#.*CLOSED",
+                "http#.*OPENED",
+                "http#.*EXCEPTION.*Protocol.*Exception",
+                "http#.*CLOSED",
+                "wseb#.*OPENED",
+                "wseb#.*IOException.*caused by.*Protocol.*Exception",
+                "wseb#.*CLOSED"
         }));
 
         forbiddenPatterns = Collections.emptyList();
@@ -126,18 +125,18 @@ public class WsebAcceptorInfoLoggingIT {
     public void shouldLogOpenWriteReceivedAndAbruptClose() throws Exception {
         k3po.finish();
 
-        expectedPatterns = new ArrayList<String>(Arrays.asList(new String[] {
-             "\\[tcp#.* [^/]*:\\d*] OPENED",
-             "\\[tcp#.* [^/]*:\\d*] CLOSED",
-             "\\[http#[^wseb#]*wseb#[^ ]* [^/]*:\\d*] OPENED",
-             "\\[http#[^wseb#]*wseb#[^ ]* [^/]*:\\d*] EXCEPTION",
-             "\\[http#[^wseb#]*wseb#[^ ]* [^/]*:\\d*] CLOSED",
-             "\\[http#.* [^/]*:\\d*] OPENED",
-             "\\[http#.* [^/]*:\\d*] EXCEPTION",
-             "\\[http#.* [^/]*:\\d*] CLOSED",
-             "\\[wseb#.* [^/]*:\\d*] OPENED",
-             "\\[wseb#.* [^/]*:\\d*] EXCEPTION",
-             "\\[wseb#.* [^/]*:\\d*] CLOSED"
+        expectedPatterns = new ArrayList<>(Arrays.asList(new String[]{
+                "\\[tcp#.* [^/]*:\\d*] OPENED",
+                "\\[tcp#.* [^/]*:\\d*] CLOSED",
+                "\\[http#[^wseb#]*wseb#[^ ]* [^/]*:\\d*] OPENED",
+                "\\[http#[^wseb#]*wseb#[^ ]* [^/]*:\\d*] EXCEPTION",
+                "\\[http#[^wseb#]*wseb#[^ ]* [^/]*:\\d*] CLOSED",
+                "\\[http#.* [^/]*:\\d*] OPENED",
+                "\\[http#.* [^/]*:\\d*] EXCEPTION",
+                "\\[http#.* [^/]*:\\d*] CLOSED",
+                "\\[wseb#.* [^/]*:\\d*] OPENED",
+                "\\[wseb#.* [^/]*:\\d*] EXCEPTION",
+                "\\[wseb#.* [^/]*:\\d*] CLOSED"
         }));
 
         forbiddenPatterns = Collections.emptyList();
@@ -150,16 +149,16 @@ public class WsebAcceptorInfoLoggingIT {
     public void shouldLogOpenAndCleanClientClose() throws Exception {
         k3po.finish();
 
-        expectedPatterns = new ArrayList<String>(Arrays.asList(new String[] {
-             "\\[tcp#.* [^/]*:\\d*] OPENED",
-             "\\[tcp#.* [^/]*:\\d*] CLOSED",
-             "\\[http#.* [^/]*:\\d*] OPENED",
-             "\\[http#.* [^/]*:\\d*] CLOSED",
-             "\\[wseb#.* [^/]*:\\d*] OPENED",
-             "\\[wseb#.* [^/]*:\\d*] CLOSED"
+        expectedPatterns = new ArrayList<>(Arrays.asList(new String[]{
+                "\\[tcp#.* [^/]*:\\d*] OPENED",
+                "\\[tcp#.* [^/]*:\\d*] CLOSED",
+                "\\[http#.* [^/]*:\\d*] OPENED",
+                "\\[http#.* [^/]*:\\d*] CLOSED",
+                "\\[wseb#.* [^/]*:\\d*] OPENED",
+                "\\[wseb#.* [^/]*:\\d*] CLOSED"
         }));
 
-        forbiddenPatterns = Arrays.asList("#.*EXCEPTION");
+        forbiddenPatterns = Collections.singletonList("#.*EXCEPTION");
     }
 
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -196,7 +196,7 @@ public class BindingsTest {
     }
 
     public static <T extends Collection<?>> void assertEmpty(T collection) {
-        assertThat(collection, new IsCollectionEmpty<T>());
+        assertThat(collection, new IsCollectionEmpty<>());
     }
 
     private static final class IsCollectionEmpty<T extends Collection<?>> extends BaseMatcher<T> {

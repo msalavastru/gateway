@@ -1,5 +1,5 @@
 /**
- * Copyright 2007-2015, Kaazing Corporation. All rights reserved.
+ * Copyright 2007-2016, Kaazing Corporation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -64,22 +63,22 @@ import org.kaazing.gateway.server.Gateway;
 import org.kaazing.gateway.server.Launcher;
 import org.kaazing.gateway.server.config.SchemeConfig;
 import org.kaazing.gateway.server.config.parse.DefaultSchemeConfig;
-import org.kaazing.gateway.server.config.sep2014.AuthenticationType;
-import org.kaazing.gateway.server.config.sep2014.AuthorizationConstraintType;
-import org.kaazing.gateway.server.config.sep2014.ClusterConnectOptionsType;
-import org.kaazing.gateway.server.config.sep2014.ClusterType;
-import org.kaazing.gateway.server.config.sep2014.CrossSiteConstraintType;
-import org.kaazing.gateway.server.config.sep2014.GatewayConfigDocument;
-import org.kaazing.gateway.server.config.sep2014.LoginModuleOptionsType;
-import org.kaazing.gateway.server.config.sep2014.LoginModuleType;
-import org.kaazing.gateway.server.config.sep2014.MimeMappingType;
-import org.kaazing.gateway.server.config.sep2014.RealmType;
-import org.kaazing.gateway.server.config.sep2014.SecurityType;
-import org.kaazing.gateway.server.config.sep2014.ServiceAcceptOptionsType;
-import org.kaazing.gateway.server.config.sep2014.ServiceConnectOptionsType;
-import org.kaazing.gateway.server.config.sep2014.ServiceDefaultsType;
-import org.kaazing.gateway.server.config.sep2014.ServicePropertiesType;
-import org.kaazing.gateway.server.config.sep2014.ServiceType;
+import org.kaazing.gateway.server.config.nov2015.AuthenticationType;
+import org.kaazing.gateway.server.config.nov2015.AuthorizationConstraintType;
+import org.kaazing.gateway.server.config.nov2015.ClusterConnectOptionsType;
+import org.kaazing.gateway.server.config.nov2015.ClusterType;
+import org.kaazing.gateway.server.config.nov2015.CrossSiteConstraintType;
+import org.kaazing.gateway.server.config.nov2015.GatewayConfigDocument;
+import org.kaazing.gateway.server.config.nov2015.LoginModuleOptionsType;
+import org.kaazing.gateway.server.config.nov2015.LoginModuleType;
+import org.kaazing.gateway.server.config.nov2015.MimeMappingType;
+import org.kaazing.gateway.server.config.nov2015.RealmType;
+import org.kaazing.gateway.server.config.nov2015.SecurityType;
+import org.kaazing.gateway.server.config.nov2015.ServiceAcceptOptionsType;
+import org.kaazing.gateway.server.config.nov2015.ServiceConnectOptionsType;
+import org.kaazing.gateway.server.config.nov2015.ServiceDefaultsType;
+import org.kaazing.gateway.server.config.nov2015.ServicePropertiesType;
+import org.kaazing.gateway.server.config.nov2015.ServiceType;
 import org.kaazing.gateway.server.context.DependencyContext;
 import org.kaazing.gateway.server.context.GatewayContext;
 import org.kaazing.gateway.server.service.ServiceRegistry;
@@ -203,9 +202,6 @@ public class GatewayContextResolver {
 
         this.transportContextsBySchemeName = new HashMap<>();
         this.transportContextsByName = new HashMap<>();
-
-        // Initialize the SslCipherSuites (pertains to KG-7059)
-        SslCipherSuites.init();
     }
 
     public GatewayContext resolve(GatewayConfigDocument gatewayConfigDoc)
@@ -473,9 +469,9 @@ public class GatewayContextResolver {
             String[] balanceStrings = serviceConfig.getBalanceArray();
             String[] connectStrings = serviceConfig.getConnectArray();
             String serviceType = serviceConfig.getType();
-            Service serviceInstance = null;
+            Service serviceInstance;
 
-            Class<? extends Service> serviceClass = null;
+            Class<? extends Service> serviceClass;
             if (serviceType.startsWith(SERVICE_TYPE_CLASS_PREFIX)) {
                 String className = serviceType.substring(SERVICE_TYPE_CLASS_PREFIX.length());
                 try {
@@ -1037,7 +1033,7 @@ public class GatewayContextResolver {
             }
 
             //Login Module Inject Rule 4: Inject Timeout Module at Front of Chain
-            if (authType.isSetSessionTimeout()) {
+            if (authType.isSetSessionTimeout() && authType.getSessionTimeout() != null) {
                 Map<String, String> options = new HashMap<>();
                 if (authType.isSetSessionTimeout()) {
                     options.put("session-timeout", resolveTimeIntervalValue(authType.getSessionTimeout()));
